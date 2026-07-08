@@ -3,3 +3,8 @@
 
 # Baseball data
 data/
+
+.vscode/
+
+# pycache
+__pycache__/

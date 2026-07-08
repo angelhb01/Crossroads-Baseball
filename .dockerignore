@@ -1,3 +1,4 @@
 data/
 notebooks/
 .ipynb*/
+__pycache__/
