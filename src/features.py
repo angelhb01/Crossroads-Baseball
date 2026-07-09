@@ -1,11 +1,10 @@
 from elosports.elo import Elo
-from fastapi import File
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
-# Add Elo Ratings to every game
-def elo_ratings(file: File):
-    df = pd.read_csv(file)
+# Add elo rating features to every game
+def elo_ratings(df: pd.DataFrame):
+    #df = pd.read_csv(file)
     allTeams = set(df.away.tolist())
     allTeams.update(df.home.tolist())
     eloLeague = Elo(k=20)
@@ -26,7 +25,7 @@ def elo_ratings(file: File):
     for team in eloLeague.ratingDict.keys():
         print(team, eloLeague.ratingDict[team])
     
-    return preprocess(df)
+    return df
 
 # Preprocess the data
 def preprocess(df):
