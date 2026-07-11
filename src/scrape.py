@@ -20,6 +20,7 @@ headers = {
 def scrape_data():
     page = requests.get(initial_url, headers=headers).text
     soup = BeautifulSoup(page, 'html.parser')
+    sleep(5)
 
     column_headers = ['date', 'away', 'home', 'away_score', 'home_score']
     df = pd.DataFrame(columns=column_headers)
@@ -105,4 +106,4 @@ def scrape_data():
     df['away'] = df['away'].replace(same_team)
     df['home'] = df['home'].replace(same_team)
 
-    return df
+    return df.sort_values(by="date", ascending=True)
