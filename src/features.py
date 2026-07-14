@@ -1,10 +1,10 @@
 from elosports.elo import Elo
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+import numpy as np
 
 # Add elo rating features to every game
-def elo_ratings(df: pd.DataFrame):
-    #df = pd.read_csv(file)
+def elo_ratings(df: pd.DataFrame) -> pd.DataFrame:
     allTeams = set(df.away.tolist())
     allTeams.update(df.home.tolist())
     eloLeague = Elo(k=20)
@@ -28,25 +28,21 @@ def elo_ratings(df: pd.DataFrame):
     return df
 
 # Preprocess the data
-def preprocess(df):
-    # Convert datetime to a numerical format
-    df['date'] = pd.to_datetime(df['date'])
-    df['year'] = df['date'].dt.year
-    df['month'] = df['date'].dt.month
-    df['day'] = df['date'].dt.day
-
-    # Label encode the categorical features (away, home, winning_team)
-    team_cols = ['home', 'away', 'winning_team']
+# Task: Finish modifying preprocessing
+def preprocess(data: dict) -> dict:
+    print(f"data: {data}")
+    # Label encode the categorical features (away, home)
+    team_cols = ['home_team', 'away_team']
     # Combine all columns to find every unique team name
-    all_unique_teams = pd.concat([df[col] for col in team_cols]).unique()
+    all_unique_teams = pd.concat([data[col] for col in team_cols]).unique()
 
     # fit the encoder once in the entire list of unique teams
     le = LabelEncoder()
     le.fit(all_unique_teams)
 
-    df['away_encode'] = le.transform(df['away'])
-    df['home_encode'] = le.transform(df['home'])
-    df['winning_team_encode'] = le.transform(df['winning_team'])
-    df['home_win'] = (df['winning_team'] == df['home']).astype(int)
+    data['away_encode'] = le.transform(data['away'])
+    data['home_encode'] = le.transform(data['home'])
+    data['winning_team_encode'] = le.transform(data['winning_team'])
+    data['home_win'] = (data['winning_team'] == data['home']).astype(int)
 
-    return df
+    return data

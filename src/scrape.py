@@ -20,12 +20,14 @@ headers = {
 def scrape_data():
     page = requests.get(initial_url, headers=headers).text
     soup = BeautifulSoup(page, 'html.parser')
-    sleep(5)
 
     column_headers = ['date', 'away', 'home', 'away_score', 'home_score']
     df = pd.DataFrame(columns=column_headers)
 
-    urls = [option.get('value') for option in soup.find('select', id='season-selector').find_all('option')]
+    options = soup.find('select', id='season-selector').find_all('option')
+    sleep(5)
+
+    urls = [option.get('value') for option in options]
 
     for url in urls:
         page = requests.get("https://crossroadsleague.com" + url, headers=headers).text
