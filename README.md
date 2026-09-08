@@ -51,7 +51,7 @@ Crossroads-Baseball/
 │   └── predict.py                # Model predictions
 ├── Dockerfile                    # Container configuration
 ├── requirements.txt              # Python dependencies
-└── README.md                     # This file
+└── README.md                     # README
 ```
 
 ## 🚀 Getting Started
