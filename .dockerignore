@@ -2,3 +2,4 @@ data/
 notebooks/
 .ipynb*/
 __pycache__/
+venv/
