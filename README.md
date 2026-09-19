@@ -97,6 +97,11 @@ streamlit run app.py
 ```
 Then open your browser to `http://localhost:8501`
 
+#### Server (Fastapi/Uvicorn)
+```bash
+uvicorn main:api
+```
+
 ## 📝 Usage
 
 ### Making Predictions via API
