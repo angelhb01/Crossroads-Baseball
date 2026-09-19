@@ -1,7 +1,7 @@
 from elosports.elo import Elo
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
-import numpy as np
+
 
 # Add elo rating features to every game
 def elo_ratings(df: pd.DataFrame) -> pd.DataFrame:
@@ -24,25 +24,28 @@ def elo_ratings(df: pd.DataFrame) -> pd.DataFrame:
         df.loc[game[0], 'home_elo_post'] = eloLeague.ratingDict[game[1].home]
     for team in eloLeague.ratingDict.keys():
         print(team, eloLeague.ratingDict[team])
-    
+
     return df
 
-# Preprocess the data
-# Task: Finish modifying preprocessing
+
+# Preprocess the data for model inference.
 def preprocess(data: dict) -> dict:
-    print(f"data: {data}")
-    # Label encode the categorical features (away, home)
-    team_cols = ['home_team', 'away_team']
-    # Combine all columns to find every unique team name
-    all_unique_teams = pd.concat([data[col] for col in team_cols]).unique()
+    data = dict(data)
 
-    # fit the encoder once in the entire list of unique teams
+    away_team = data.get('away_team')
+    home_team = data.get('home_team')
+    if not away_team or not home_team:
+        raise ValueError('away_team and home_team are required.')
+
+    team_list = [away_team, home_team]
     le = LabelEncoder()
-    le.fit(all_unique_teams)
+    le.fit(sorted(set(team_list)))
 
-    data['away_encode'] = le.transform(data['away'])
-    data['home_encode'] = le.transform(data['home'])
-    data['winning_team_encode'] = le.transform(data['winning_team'])
-    data['home_win'] = (data['winning_team'] == data['home']).astype(int)
+    data['away_encode'] = int(le.transform([away_team])[0])
+    data['home_encode'] = int(le.transform([home_team])[0])
+
+    if 'winning_team' in data and data['winning_team'] is not None:
+        data['winning_team_encode'] = int(le.transform([data['winning_team']])[0])
+        data['home_win'] = int(data['winning_team'] == home_team)
 
     return data
