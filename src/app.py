@@ -80,6 +80,7 @@ if st.session_state.df is not None:
 
     if st.session_state.pred is not None:
         prediction_val = st.session_state.pred.get('prediction')
+        print(st.session_state.pred)
         if prediction_val == 0:
             st.success('Home team is likely to lose.')
         else:
